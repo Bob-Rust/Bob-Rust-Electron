@@ -47,6 +47,9 @@ contextBridge.exposeInMainWorld('Rust', {
     getSize: () => settings.size,
     getShape: () => settings.shape,
     getOpacity: () => settings.opacity,
+    checkCapture: (callback) => {
+        info.checkCapture(callback)
+    },
     startCapture: (callback) => {
         info.startCapture(callback)
     },

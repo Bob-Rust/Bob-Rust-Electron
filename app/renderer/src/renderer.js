@@ -1,50 +1,57 @@
 let isMaximized = false
 var titlebar = document.querySelector('#titlebar')
-
 document.querySelector('#btnClose').addEventListener('click', (e) => {
     window.Access.close()
 })
 
-var _paletteDiv = document.querySelector('#palette')
 var _dragDiv = document.querySelector('#drag-div')
 var btnSize = document.querySelector('#btnSize')
+var contents_minimized = document.querySelector('#minimized')
+var contents_maximized = document.querySelector('#maximized')
 btnSize.addEventListener('click', (e) => {
     isMaximized = !isMaximized
 
     if(isMaximized) {
         window.Access.maximize()
-        window.Access.setResizable(false)
-        btnSize.classList.remove('size-button-max')
-        btnSize.classList.add('size-button-min')
+        btnSize.classList.remove('size-button-min')
+        btnSize.classList.add('size-button-max')
         titlebar.classList.add('drag-titlebar')
         document.body.classList.add('body-transparent')
-        
-        _paletteDiv.classList.remove('hidden')
+
+        contents_maximized.style.display = ''
+        contents_minimized.style.display = 'none'
         _dragDiv.classList.remove('hidden')
     } else {
         window.Access.minimize()
-        window.Access.setResizable(true)
-        btnSize.classList.remove('size-button-min')
-        btnSize.classList.add('size-button-max')
+        btnSize.classList.remove('size-button-max')
+        btnSize.classList.add('size-button-min')
         titlebar.classList.remove('drag-titlebar')
         document.body.classList.remove('body-transparent')
 
-        _paletteDiv.classList.add('hidden')
+        contents_maximized.style.display = 'none'
+        contents_minimized.style.display = ''
         _dragDiv.classList.add('hidden')
     }
 })
 
+// TODO: Tell the player that no window "Rust" was found
+// TODO: Make sure that "Rust" is the active window while drawing
 var menu = document.querySelector('#menu')
 document.querySelector('#btnMenu').addEventListener('click', (e) => {
-    if(menu.style.opacity != '1') {
-        menu.style.opacity = '1'
+    window.Rust.checkCapture((enabled) => {
+        btnMenuStart.disabled = !enabled
+    })
+
+    if(menu.classList.contains('menu-hidden')) {
+        menu.classList.remove('menu-hidden')
     } else {
-        menu.style.opacity = '0'
+        menu.classList.add('menu-hidden')
     }
 })
 
+
 let drag_update;
-makeDraggable(titlebar, {
+ResizableBox.makeDraggable(titlebar, {
     down: function(e) {
         if(!isMaximized) return;
         if(drag_update) clearInterval(drag_update)
@@ -57,5 +64,25 @@ makeDraggable(titlebar, {
 })
 
 document.querySelector('#btnMenuReset').addEventListener('click', (e) => {
-    resetBoxRect()
+    draggable_div.resetBoxRect()
 })
+
+
+{
+    var draggable_div = new ResizableBox(document.querySelector('#drag-div'), () => {
+        window.Rust.setDrawingArea(draggable_div.area)
+    })
+    var rect = draggable_div.area
+}
+
+{
+    let list = document.getElementsByTagName('a')
+    for(i = 0; i < list.length; i++) {
+        let item = list.item(i)
+
+        item.addEventListener('click', (e) => {
+            e.preventDefault()
+            window.Access.openBrowserLink(item.href)
+        })
+    }
+}

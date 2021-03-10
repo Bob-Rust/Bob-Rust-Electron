@@ -11,9 +11,6 @@ contextBridge.exposeInMainWorld('Access', {
     minimize: () => {
         ipcRenderer.invoke('minimizeBrowserWindow')
     },
-    setResizable: (enable) => {
-        ipcRenderer.invoke('setBrowserWindowResizable', enable)
-    },
     tryMoveWindowToCursorMonitor: () => {
         ipcRenderer.invoke('tryMoveWindowToCursorMonitor')
     },
@@ -22,6 +19,9 @@ contextBridge.exposeInMainWorld('Access', {
     },
     openTextureDialog: () => {
         return ipcRenderer.invoke('openTextureDialog')
+    },
+    openBrowserLink: (link) => {
+        ipcRenderer.invoke('openBrowserLink', link)
     }
 })
 

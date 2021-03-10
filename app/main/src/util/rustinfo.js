@@ -317,6 +317,20 @@ function startCapture(callback) {
     })
 }
 
+function checkCapture(callback) {
+    desktopCapturer.getSources({ types: ['window', 'screen'] }).then(async sources => {
+        for(const source of sources) {
+            if(source.name === 'Rust') {
+                callback(true)
+                return
+            }
+        }
+        
+        callback(false)
+        return
+    })
+}
+
 
 
 exports.move = move
@@ -328,5 +342,6 @@ exports.setBrushOpacity = setBrushOpacity
 exports.setBrushColor = setBrushColor
 exports.getClosestColor = getClosestColor
 exports.setMouseDelay = setMouseDelay
+exports.checkCapture = checkCapture
 exports.startCapture = startCapture
 exports.settings = settings

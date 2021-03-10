@@ -1,10 +1,8 @@
-const { app, BrowserWindow, globalShortcut, ipcMain, screen } = require('electron')
-const { dialog } = require('electron')
-const { webContents } = require('electron')
+const { app, BrowserWindow, globalShortcut, ipcMain, screen, dialog, shell } = require('electron')
 const path = require('path')
 
-const WINDOW_MIN_WIDTH = 652
-const WINDOW_MIN_HEIGHT = 456
+const WINDOW_MIN_WIDTH = 240; //652
+const WINDOW_MIN_HEIGHT = 480; // 456
 
 function createWindow() {
 	const win = new BrowserWindow({
@@ -87,13 +85,6 @@ ipcMain.handle('minimizeBrowserWindow', async (event) => {
 	}
 })
 
-ipcMain.handle('setBrowserWindowResizable', async (event, enable) => {
-	let win = BrowserWindow.fromId(event.sender.id)
-	if(win) {
-		win.setResizable(enable)
-	}
-})
-
 ipcMain.handle('getWindowBounds', async (event) => {
 	let win = BrowserWindow.fromId(event.sender.id)
 	if(win) {
@@ -135,6 +126,10 @@ ipcMain.handle('setIgnoreMouseEvents', async (event, enable) => {
 	if(win) {
 		win.setIgnoreMouseEvents(enable)
 	}
+})
+
+ipcMain.handle('openBrowserLink', async (event, href) => {
+	shell.openExternal(href)
 })
 
 // =======================
