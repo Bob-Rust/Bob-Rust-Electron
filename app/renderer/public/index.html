@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Bob Rust</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+
+    <style>
+        body {
+            background-color: #0e0b00;
+            background-image: url(data:image/png;base64,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);
+            background-size: 48px;
+            margin: 0px;
+            font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
+            overflow: hidden;
+            color: white;
+        }
+
+        .body-transparent {
+            background-color: #1116;
+            background-image: none;
+        }
+
+        #titlebar {
+            -webkit-app-region: drag;
+            background-color: #424242;
+            color: white;
+            height: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        #content {
+            position: absolute;
+            top: 20px;
+            right: 0;
+            left: 0;
+            bottom: 0;
+        }
+
+        .drag-titlebar {
+            -webkit-app-region: no-drag !important;
+            cursor: move;
+        }
+
+        .titlebar-title {
+            position: absolute;
+            font-size: 13px;
+            padding: 2px 2px 0 3px;
+            left: 0px;
+        }
+
+        .titlebar-button {
+            cursor: default;
+            position: relative;
+            shape-rendering: crispEdges;
+            transition: 0.1s;
+        }
+
+        .titlebar-button:hover {
+            opacity: 0.7;
+        }
+
+        .menu-button {
+            background-color: #50507f;
+            shape-rendering: crispEdges;
+            background-image: url('images/menu.png');
+            width: 60px;
+            height: 20px;
+        }
+
+        .size-button-max, .size-button-min {
+            background-color: #7f5050;
+            width: 20px;
+            height: 20px;
+        } 
+
+        .size-button-max {
+            background-image: url('images/maximized.png');
+        }
+
+        .size-button-min {
+            background-image: url('images/minimized.png');
+        }
+
+        .close-button {
+            transition: 0.05s;
+            background-color: #c80000;
+            background-image: url('images/close.png');
+            width: 20px;
+            height: 20px;
+        }
+
+        .no-drag {
+            -webkit-app-region: no-drag !important;
+            user-select: none;
+        }
+
+        #menu {
+            position: absolute;
+            background-color: #787878;
+            z-index: 999;
+            right: 41px;
+            width: 220px;
+            height: 120px;
+            transition: 0.1s;
+        }
+
+        #menu > button {
+            margin: 4px 0 0 4px;
+            width: 212px;
+            height: 20px;
+        }
+
+        #menu > span {
+            margin: 4px 0 0 4px;
+            font-size: 14px;
+            width: 212px;
+            height: 20px;
+        }
+
+        #sign-icon {
+            background-image: url('signs/sign.pictureframe.xxl.png');
+            background-color: #666a;
+            background-size: contain;
+            background-repeat: no-repeat;
+            transition: 0.1s;
+            border: 4px solid transparent;
+            margin: 4px 0 0 4px;
+            height: 96px;
+            width: 96px;
+        }
+
+        #sign-icon:hover {
+            transition: 0.1s;
+            background-color: #888;
+        }
+
+        .sign-icon-transparent {
+            background: transparent !important;
+        }
+
+        #sign-menu {
+            overflow: hidden;
+            position: relative;
+            left: -8px;
+            top: -8px;
+            padding-bottom: 4px;
+            display: flex;
+            flex-flow: wrap;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        #sign-menu > div:nth-child(1) {
+            transition: 0 !important;
+            opacity: 1;
+        }
+
+        #sign-menu.sign-menu-hidden > div:nth-child(1) {
+            opacity: 0;
+        }
+
+        .sign-menu-visible {
+            transition: 0.3s;
+            transition-timing-function: ease-in;
+            width: calc(108px * 6 + 4px);
+            height: calc(108px * 4);
+        }
+
+        .sign-menu-hidden {
+            transition: 0.3s;
+            transition-timing-function: ease-out;
+            width: 0;
+            height: 0;
+        }
+
+        .sign-menu-item {
+            background-size: contain;
+            background-repeat: no-repeat;
+            border: 4px solid transparent;
+            margin-left: 4px;
+            margin-top: 4px;
+            height: 96px;
+            width: 96px;
+            pointer-events: all;
+        }
+
+        .sign-menu-item:hover {
+            transition: 0.1s;
+            background-color: #8886;
+        }
+
+        .sign-menu-item-disabled {
+            background-color: #333;
+            background-size: contain;
+            background-repeat: no-repeat;
+            border: 4px solid transparent;
+            margin-left: 4px;
+            margin-top: 4px;
+            height: 96px;
+            opacity: 0.5;
+            width: 96px;
+        }
+
+        #video, #canvas {
+            /* display: none; */
+            position: absolute;
+            width: 1920px;
+            height: 1080px;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+        }
+    </style>
+    <style>
+        #drag-div {
+            position: absolute;
+            background-color: #ffffff7f;
+            user-select: none;
+            border: 2px solid white;
+            box-sizing: border-box;
+        }
+        #drag-tl {
+            left: -7px;
+            top: -7px;
+        }
+        #drag-tr {
+            right: -7px;
+            top: -7px;
+        }
+        #drag-br {
+            right: -7px;
+            bottom: -7px;
+        }
+        #drag-bl {
+            left: -7px;
+            bottom: -7px;
+        }
+
+        #drag-tl, #drag-tr, #drag-br, #drag-bl {
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+            height: 12px;
+            width: 12px;
+            transition: 0.05s;
+        }
+
+        #drag-tl:hover, #drag-tr:hover, #drag-br:hover, #drag-bl:hover {
+            height: 16px;
+            width: 16px;
+            margin: -2px;
+            transition: 0.05s;
+        }
+    </style>
+    <style>
+        #palette {
+            background-color: #f0f3;
+            position: absolute;
+            width: 150px;
+            height: 525px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="titlebar">
+        <div class="titlebar-title"><span class="no-drag">Bob Rust</span></div>
+        <div id="btnClose" class="close-button titlebar-button no-drag"></div>
+        <div id="btnSize" class="size-button-min titlebar-button no-drag"></div>
+        <div id="btnMenu" class="menu-button titlebar-button no-drag"></div>
+    </div>
+    <div id="content">
+        <div id="menu" style="opacity: 0;">
+            <span class="no-drag">Menu</span>
+            <button id="btnMenuSetTexture"><span class="no-drag">Set Texture</span></button>
+            <button id="btnMenuReset"><span class="no-drag">Reset Texture Area</span></button>
+            <button id="btnMenuStart"><span class="no-drag">Start Drawing</span></button>
+            <button id="btnMenuAbout"><span class="no-drag">About</span></button>
+        </div>
+        
+        <div id="sign-icon">
+            <div id="sign-menu" class="sign-menu-hidden">
+            </div>
+        </div>
+
+        <div id="palette" class="hidden">
+        </div>
+        
+        <video id="video" style="display:none"></video>
+        <canvas id="canvas" style="display:none"></canvas>
+    </div>
+    <div id="drag-div" class="hidden" style="top: -16px; left: -16px; width: 0; height: 0;">
+        <div id="drag-tl"></div>
+        <div id="drag-tr"></div>
+        <div id="drag-br"></div>
+        <div id="drag-bl"></div>
+    </div>
+
+    <script src="../src/movablebox.js"></script>
+    <script src="../src/renderer.js"></script>
+    <script src="../src/signmenu.js"></script>
+    <script src="../src/rust_test.js"></script>
+</body>
+</html>
