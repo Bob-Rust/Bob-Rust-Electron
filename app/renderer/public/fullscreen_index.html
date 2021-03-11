@@ -9,6 +9,7 @@
     <style>
         body {
             background-color: #0006;
+            background-color: transparent;
         }
 
         #titlebar {
@@ -151,16 +152,6 @@
             left: 0;
             bottom: 0;
         }
-
-        img.github {
-            width: 20px;
-            height: 20px;
-            margin: 2px;
-            pointer-events: all;
-            vertical-align: middle;
-            text-align: center;
-            margin-left: 5px;
-        }
     </style>
     <link rel="stylesheet" href="draggablebox.css">
     <style>
@@ -180,22 +171,63 @@
             font-size: 14px;
 
             background-color: #1f2125;
-            background-color: #383a3f;
+            background-color: #383a3f33;
             width: 200px;
-            height: 500px;
-            padding: 4px;
-            border-radius: 0 0 10px 0;
+            height: 60px;
+            padding: 8px;
+            position: absolute;
+            bottom: 0;
+            left: 408px;
+            border-radius: 0 6px 6px 0;
         }
 
         ul {
+            list-style-type: none;
             display: contents;
-            text-decoration: none;
+        }
+        
+        li {
+            margin-left: 4px;
+        }
+
+        .tools {
+            background-color: #383a3f;
+            border-radius: 0 6px 6px 0;
+            padding: 8px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 400px;
+            height: 60px;
+        }
+
+        .tools > div {
+            background-color: #1f2125;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 2px;
+            height: 56px;
+            width: 56px;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+
+        .tools > div:hover {
+            background-color: #292c31;
+            transition: 0.2s;
+        }
+
+        .tool-icon {
+            width: 60px;
+            height: 60px;
+            image-rendering: pixelated;
+            margin: -2px;
         }
     </style>
 </head>
 <body>
     <div id="titlebar">
-        <div class="titlebar-title"><span class="no-drag">Bob Rust FULLSCREEN</span></div>
+        <div class="titlebar-title"><span class="no-drag">Bob Rust</span></div>
         <div id="btnClose" class="close-button titlebar-button no-drag"></div>
         <div id="btnSize" class="size-button titlebar-button no-drag"></div>
     </div>
@@ -210,21 +242,27 @@
 
         <div class="info">
             <ul>
-                <li>Information</li>
-                <li></li>
                 <li>Rust: <span id="spanHasRust">false</span></li>
                 <li>Capture: <span id="spanHasCapture">false</span></li>
             </ul>
         </div>
 
+        <div class="tools">
+            <div id="toolCanvas"><img class="tool-icon" src="images/tool_canvas.png"></img></div>
+            <div id="toolImage"><img class="tool-icon" src="images/tool_image.png"></img></div>
+            <div><img class="tool-icon" src="images/tool_start.png"></img></div>
+            <div></div>
+            <div style="width: 138px; text-align: center; font-family: monospace;"><span style="vertical-align: middle;">F10 to focus toolbar</span></div>
+        </div>
+
         <div>
             <div id="sign-icon"><div id="sign-menu" class="sign-menu-hidden"></div></div>
-            <div id="palette"></div>
+            <div id="palette" style="display:none"></div>
             <video id="video" style="display:none"></video>
             <canvas id="canvas" style="display:none"></canvas>
         </div>
     </div>
-    <div id="drag-div"></div>
+    <div id="drag-div" class="hidden"></div>
 
     <script src="../src/draggablebox.js"></script>
     <script src="../src/fullscreen_index.js"></script>

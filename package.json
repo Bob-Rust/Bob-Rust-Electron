@@ -4,7 +4,7 @@
   "description": "Made by HardCoded and Sekwah",
   "main": "app/main/src/electron.js",
   "scripts": {
-    "start": "electron . --enable-transparent-visuals"
+    "start": "electron . --enable-transparent-visuals --disable-gpu"
   },
   "keywords": [],
   "author": "HardCoded, Sekwah",

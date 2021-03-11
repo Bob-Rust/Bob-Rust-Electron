@@ -83,6 +83,11 @@ function createWindow() {
 		globalShortcut.unregister('F5')
 	})
 	*/
+
+	globalShortcut.register('F10', () => {
+		mini_win.focus()
+		maxi_win.focus()
+	})
 }
 
 app.whenReady().then(createWindow)
@@ -101,8 +106,17 @@ app.on('activate', () => {
 
 // icpMessages
 ipcMain.handle('closeBrowserWindow', async (event) => {
-	mini_win.close()
-	maxi_win.close()
+	try {
+		mini_win.close()
+	} catch(e) {
+		console.warn(e)
+	}
+
+	try {
+		maxi_win.close()
+	} catch(e) {
+		console.warn(e)
+	}
 })
 
 ipcMain.handle('maximizeBrowserWindow', async (event) => {
@@ -110,25 +124,24 @@ ipcMain.handle('maximizeBrowserWindow', async (event) => {
 	mini_win.hide()
 	maxi_win.setBounds(size, true)
 	maxi_win.show()
-	maxi_win.focus()
+	maxi_win.focusOnWebView()
 })
 
 ipcMain.handle('minimizeBrowserWindow', async (event) => {
 	maxi_win.hide()
 	mini_win.show()
-	mini_win.focus()
+	mini_win.focusOnWebView()
+
+	// TODO: Reposition the mini window to the center of the screen.
 })
 
 ipcMain.handle('tryMoveWindowToCursorMonitor', async (event, enable) => {
-	let win = BrowserWindow.fromId(event.sender.id)
-	if(win) {
-		let bounds = screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).bounds
-		let win_bounds = win.getBounds()
+	let bounds = screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).bounds
+	let win_bounds = maxi_win.getBounds()
 
-		if(win_bounds.x != bounds.x || win_bounds.y != bounds.y
-		|| win_bounds.width != bounds.width || win_bounds.height != bounds.height) {
-			win.setBounds(bounds, true)
-		}
+	if(win_bounds.x != bounds.x || win_bounds.y != bounds.y
+	|| win_bounds.width != bounds.width || win_bounds.height != bounds.height) {
+		maxi_win.setBounds(bounds, true)
 	}
 })
 

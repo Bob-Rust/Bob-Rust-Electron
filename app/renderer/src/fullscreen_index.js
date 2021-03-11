@@ -32,8 +32,9 @@ ResizableBox.makeDraggable(titlebar, {
     }
 })
 
+var drag_div = document.querySelector('#drag-div')
 {
-    var draggable_div = new ResizableBox(document.querySelector('#drag-div'), () => {
+    var draggable_div = new ResizableBox(drag_div, () => {
         window.Rust.setDrawingArea(draggable_div.area)
     })
     var rect = draggable_div.area
@@ -41,6 +42,11 @@ ResizableBox.makeDraggable(titlebar, {
 
 document.querySelector('#btnMenuReset').addEventListener('click', (e) => {
     draggable_div.resetBoxRect()
+})
+
+document.querySelector('#toolCanvas').addEventListener('click', (e) => {
+    drag_div.classList.remove('hidden')
+    document.body.style.backgroundColor = '#0001'
 })
 
 {
