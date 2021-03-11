@@ -2,17 +2,27 @@
   "name": "bob-rust-electron-app",
   "version": "1.0.0",
   "description": "Made by HardCoded and Sekwah",
+  "private": true,
   "main": "app/main/src/electron.js",
   "scripts": {
-    "start": "electron . --enable-transparent-visuals --disable-gpu"
+    "start": "electron . --enable-transparent-visuals --disable-gpu",
+    "sync": "lerna bootstrap"
   },
+  "workspaces": [
+    "app/*"
+  ],
   "keywords": [],
-  "author": "HardCoded, Sekwah",
-  "license": "ISC",
-  "devDependencies": {
-    "electron": "^12.0.0"
+  "author": {
+    "name": "HardCoded, Sekwah",
+    "email": "contact@bobrust.com",
+    "url": "https://www.bobrust.com/"
   },
+  "license": "MIT",
   "dependencies": {
     "robotjs": "^0.6.0"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0",
+    "electron-builder": "^22.10.5"
   }
 }
