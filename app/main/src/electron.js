@@ -1,8 +1,12 @@
 const { app, BrowserWindow, globalShortcut, ipcMain, screen, dialog, shell } = require('electron')
 const path = require('path')
 
+// TODO: Create a shadow around the minified window to make it easer to spot.
 const WINDOW_MIN_WIDTH = 240; //652
 const WINDOW_MIN_HEIGHT = 480; // 456
+
+let mini_win = null
+let maxi_win = null
 
 function createWindow() {
 	const win = new BrowserWindow({
@@ -11,10 +15,12 @@ function createWindow() {
 		minWidth: WINDOW_MIN_WIDTH,
 		minHeight: WINDOW_MIN_HEIGHT,
 		frame: false,
-		transparent: true,
+		transparent: false,
 		maximizable: false,
 		resizable: false,
+		show: false,
 		webPreferences: {
+			backgroundThrottling: false,
 			preload: path.join(__dirname, 'preload.js'),
 			contextIsolation: true,
 			enableRemoteModule: false,
@@ -22,11 +28,46 @@ function createWindow() {
 			/* devTools: false, */
 		}
 	})
-
-	// win.setIgnoreMouseEvents(true)
+	
 	win.loadFile('app/renderer/public/index.html')
 	win.setAlwaysOnTop(true, "screen-saver", 1)
 	win.openDevTools({ mode: 'detach' })
+	/*
+	 * The window frame blocks mouse events 4 pixels But only after hide()/ show()/ hide() is called!??!
+	 * This is probably a bug?
+	 */
+	mini_win = win
+
+	win.on('ready-to-show', () => {
+		win.show()
+	})
+
+	{
+		const win2 = new BrowserWindow({
+			width: WINDOW_MIN_WIDTH,
+			height: WINDOW_MIN_HEIGHT,
+			minWidth: WINDOW_MIN_WIDTH,
+			minHeight: WINDOW_MIN_HEIGHT,
+			frame: false,
+			transparent: true,
+			maximizable: false,
+			resizable: false,
+			show: false,
+			webPreferences: {
+				backgroundThrottling: false,
+				preload: path.join(__dirname, 'preload.js'),
+				contextIsolation: true,
+				enableRemoteModule: false,
+				nodeIntegration: false,
+				/* devTools: false, */
+			}
+		})
+		
+		win2.loadFile('app/renderer/public/fullscreen_index.html')
+		win2.setAlwaysOnTop(true, "screen-saver", 1)
+		win2.openDevTools({ mode: 'detach' })
+		maxi_win = win2
+	}
 
 	// Disable reloading
 	/*
@@ -60,38 +101,22 @@ app.on('activate', () => {
 
 // icpMessages
 ipcMain.handle('closeBrowserWindow', async (event) => {
-	let win = BrowserWindow.fromId(event.sender.id)
-	if(win) win.close()
+	mini_win.close()
+	maxi_win.close()
 })
 
 ipcMain.handle('maximizeBrowserWindow', async (event) => {
-	let win = BrowserWindow.fromId(event.sender.id)
-	if(win) {
-		let size = screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).bounds
-		win.setBounds(size, true)
-	}
+	let size = screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).bounds
+	mini_win.hide()
+	maxi_win.setBounds(size, true)
+	maxi_win.show()
+	maxi_win.focus()
 })
 
 ipcMain.handle('minimizeBrowserWindow', async (event) => {
-	let win = BrowserWindow.fromId(event.sender.id)
-	if(win) {
-		let bounds = screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).bounds
-		win.setBounds({
-			x: (bounds.x + Math.trunc((bounds.width - WINDOW_MIN_WIDTH) / 2)),
-			y: (bounds.y + Math.trunc((bounds.height - WINDOW_MIN_HEIGHT) / 2)),
-			width: WINDOW_MIN_WIDTH,
-			height: WINDOW_MIN_HEIGHT
-		}, true)
-	}
-})
-
-ipcMain.handle('getWindowBounds', async (event) => {
-	let win = BrowserWindow.fromId(event.sender.id)
-	if(win) {
-		return win.getBounds()
-	}
-
-	return { x: 0, y: 0, width: 0, height: 0 }
+	maxi_win.hide()
+	mini_win.show()
+	mini_win.focus()
 })
 
 ipcMain.handle('tryMoveWindowToCursorMonitor', async (event, enable) => {

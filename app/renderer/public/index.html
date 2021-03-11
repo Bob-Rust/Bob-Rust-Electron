@@ -5,229 +5,27 @@
     <title>Bob Rust</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
 
+    
+    <link rel="stylesheet" href="style.css">
     <style>
         body {
-            background-color: #222;
-            background-size: 48px;
-            margin: 0px;
-            font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
-            overflow: hidden;
-            color: white;
-        }
-
-        .body-transparent {
-            background-color: #1116;
-            background-image: none;
+            background-color: #383a3f;
         }
 
         #titlebar {
             -webkit-app-region: drag;
-            background-color: #424242;
-            color: white;
-            height: 20px;
-            width: 100%;
-            display: flex;
-            flex-direction: row-reverse;
         }
 
-        #content {
-            position: absolute;
-            top: 20px;
-            right: 0;
-            left: 0;
-            bottom: 0;
-            user-select: none;
-        }
-
-        .drag-titlebar {
-            -webkit-app-region: no-drag !important;
-            cursor: move;
-        }
-
-        .titlebar-title {
-            position: absolute;
-            font-size: 13px;
-            padding: 2px 2px 0 3px;
-            left: 0px;
-        }
-
-        .titlebar-button {
-            cursor: default;
-            position: relative;
-            shape-rendering: crispEdges;
-            transition: 0.1s;
-        }
-
-        .titlebar-button:hover {
-            opacity: 0.7;
-        }
-
-        .menu-button {
-            background-color: #50507f;
-            shape-rendering: crispEdges;
-            background-image: url('images/menu.png');
-            width: 60px;
-            height: 20px;
-        }
-
-        .size-button-max, .size-button-min {
-            background-color: #7f5050;
-            width: 20px;
-            height: 20px;
-        } 
-
-        .size-button-max {
-            background-image: url('images/maximized.png');
-        }
-
-        .size-button-min {
+        .size-button {
             background-image: url('images/minimized.png');
         }
 
-        .close-button {
-            transition: 0.05s;
-            background-color: #c80000;
-            background-image: url('images/close.png');
-            width: 20px;
-            height: 20px;
-        }
-
-        .no-drag {
-            -webkit-app-region: no-drag !important;
-            user-select: none;
-        }
-
-        #menu {
-            position: absolute;
-            background-color: #787878;
-            z-index: 999;
-            /* right: 41px; */
-            width: 220px;
-            height: 120px;
-            transition: 0.1s;
-        }
-
-        .menu-hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        #menu > button {
-            margin: 4px 0 0 4px;
-            width: 212px;
-            height: 20px;
-        }
-
-        #menu > span {
-            margin: 4px 0 0 4px;
-            font-size: 14px;
-            width: 212px;
-            height: 20px;
-        }
-
-        #sign-icon {
-            display: none; /* Reposition this button */
-            background-image: url('signs/sign.pictureframe.xxl.png');
-            background-color: #666a;
-            background-size: contain;
-            background-repeat: no-repeat;
-            transition: 0.1s;
-            border: 4px solid transparent;
-            margin: 4px 0 0 4px;
-            height: 96px;
-            width: 96px;
-        }
-
-        #sign-icon:hover {
-            transition: 0.1s;
-            background-color: #888;
-        }
-
-        .sign-icon-transparent {
-            background: transparent !important;
-        }
-
-        #sign-menu {
-            overflow: hidden;
-            position: relative;
-            left: -8px;
-            top: -8px;
-            padding-bottom: 4px;
-            display: flex;
-            flex-flow: wrap;
-            user-select: none;
-            pointer-events: none;
-        }
-
-        #sign-menu > div:nth-child(1) {
-            transition: 0 !important;
-            opacity: 1;
-        }
-
-        #sign-menu.sign-menu-hidden > div:nth-child(1) {
-            opacity: 0;
-        }
-
-        .sign-menu-visible {
-            transition: 0.3s;
-            transition-timing-function: ease-in;
-            width: calc(108px * 6 + 4px);
-            height: calc(108px * 4);
-        }
-
-        .sign-menu-hidden {
-            transition: 0.3s;
-            transition-timing-function: ease-out;
-            width: 0;
-            height: 0;
-        }
-
-        .sign-menu-item {
-            background-size: contain;
-            background-repeat: no-repeat;
-            border: 4px solid transparent;
-            margin-left: 4px;
-            margin-top: 4px;
-            height: 96px;
-            width: 96px;
-            pointer-events: all;
-        }
-
-        .sign-menu-item:hover {
-            transition: 0.1s;
-            background-color: #8886;
-        }
-
-        .sign-menu-item-disabled {
-            background-color: #333;
-            background-size: contain;
-            background-repeat: no-repeat;
-            border: 4px solid transparent;
-            margin-left: 4px;
-            margin-top: 4px;
-            height: 96px;
-            opacity: 0.5;
-            width: 96px;
-        }
-
-        #video, #canvas {
-            /* display: none; */
-            position: absolute;
-            width: 1920px;
-            height: 1080px;
-            top: 0;
-            right: 0;
-            left: 0;
-            bottom: 0;
-        }
-
         #footer {
-            /* background-color: #007acc; */
-            background-color: gray;
+            background-color: #677584;
             position: absolute;
             height: 24px;
             width: 100%;
-            bottom: 0;
+            bottom: -0;
             user-select: none;
             pointer-events: none;
             font-size: 11px;
@@ -240,24 +38,7 @@
             pointer-events: all;
             vertical-align: middle;
             text-align: center;
-        }
-
-        a {
-            text-decoration: none;
-            color: white;
-        }
-    </style>
-    <link rel="stylesheet" href="draggablebox.css">
-    <style>
-        #palette {
-            background-color: #f0f3;
-            position: absolute;
-            width: 150px;
-            height: 525px;
-        }
-
-        .hidden {
-            display: none;
+            margin-left: 5px;
         }
     </style>
 </head>
@@ -265,43 +46,22 @@
     <div id="titlebar">
         <div class="titlebar-title"><span class="no-drag">Bob Rust</span></div>
         <div id="btnClose" class="close-button titlebar-button no-drag"></div>
-        <div id="btnSize" class="size-button-min titlebar-button no-drag"></div>
-        <div id="btnMenu" class="menu-button titlebar-button no-drag"></div>
+        <div id="btnSize" class="size-button titlebar-button no-drag"></div>
     </div>
+
     <div id="content">
-        <div id="menu" class="menu-hidden">
-            <span class="no-drag">Menu</span>
-            <button id="btnMenuSetTexture"><span class="no-drag">Set Texture</span></button>
-            <button id="btnMenuReset"><span class="no-drag">Reset Texture Area</span></button>
-            <button id="btnMenuStart" disabled><span class="no-drag">Start Drawing</span></button>
-            <button id="btnMenuAbout"><span class="no-drag">About</span></button>
+        <div style="text-align: center;">
+            <p>Maximize to get started</p>
+            <p>Write about this or maybe add buttons here 🤔</p>
         </div>
 
-        <div id="minimized">
-            <div style="text-align: center;">
-                <p>Maximize to get started</p>
-                <p>Write about this or maybe add buttons here 🤔</p>
-            </div>
-
-            <div id="footer">
-                <a href="https://github.com/Kariaro/Bob-Rust-Electron" target="_blank">
-                    <div><img class="github" src="images/GitHub-Mark-32px.png" width="20" height="20" /> Authors HardCoded & Sekwah 2021 (c)</div>
-                </a>
-            </div>
-        </div>
-
-        <div id="maximized" style="display:none">
-            <div id="sign-icon"><div id="sign-menu" class="sign-menu-hidden"></div></div>
-            <div id="palette"></div>
-            <video id="video" style="display:none"></video>
-            <canvas id="canvas" style="display:none"></canvas>
+        <div id="footer">
+            <a href="https://github.com/Kariaro/Bob-Rust-Electron" target="_blank">
+                <div><img class="github" src="images/GitHub-Mark-32px.png" width="20" height="20" /> Authors HardCoded & Sekwah</div>
+            </a>
         </div>
     </div>
-    <div id="drag-div" class="hidden"></div>
-
-    <script src="../src/draggablebox.js"></script>
-    <script src="../src/renderer.js"></script>
-    <script src="../src/signmenu.js"></script>
-    <script src="../src/rust_test.js"></script>
+    
+    <script src="../src/index.js"></script>
 </body>
 </html>

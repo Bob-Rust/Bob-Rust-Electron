@@ -67,10 +67,6 @@ contextBridge.exposeInMainWorld('Rust', {
     }
 })
 
-function sleep(ms) {
-    return new Promise(r => setTimeout(r, ms));
-}
-
 function startDrawing(path) {
     if(path == null) {
         // TODO: Create a modal that tells the user that no texture has been selected!
@@ -94,7 +90,10 @@ function startDrawing(path) {
             ipcRenderer.invoke('setIgnoreMouseEvents', false)
         })
     }
-    
+}
+
+function sleep(ms) {
+    return new Promise(r => setTimeout(r, ms));
 }
 
 // TODO: Make sure we cannot press anywhere else then Rust.. Otherwise it could cause bad things to happen..

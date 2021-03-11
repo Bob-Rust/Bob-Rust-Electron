@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Bob Rust</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #0006;
+        }
+
+        #titlebar {
+            -webkit-app-region: no-drag;
+            cursor: move;
+        }
+
+        .menu-button {
+            display: none;
+            background-color: #50507f;
+            shape-rendering: crispEdges;
+            background-image: url('images/menu.png');
+            width: 60px;
+            height: 20px;
+        }
+
+        .size-button {
+            background-image: url('images/maximized.png');
+        }
+
+        #menu {
+            position: absolute;
+            background-color: #787878;
+            z-index: 999;
+            width: 220px;
+            height: 120px;
+            transition: 0.1s;
+        }
+
+        .menu-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #menu > button {
+            margin: 4px 0 0 4px;
+            width: 212px;
+            height: 20px;
+        }
+
+        #menu > span {
+            margin: 4px 0 0 4px;
+            font-size: 14px;
+            width: 212px;
+            height: 20px;
+        }
+
+        #sign-icon {
+            display: none; /* Reposition this button */
+            background-image: url('signs/sign.pictureframe.xxl.png');
+            background-color: #666a;
+            background-size: contain;
+            background-repeat: no-repeat;
+            transition: 0.1s;
+            border: 4px solid transparent;
+            margin: 4px 0 0 4px;
+            height: 96px;
+            width: 96px;
+        }
+
+        #sign-icon:hover {
+            transition: 0.1s;
+            background-color: #888;
+        }
+
+        .sign-icon-transparent {
+            background: transparent !important;
+        }
+
+        #sign-menu {
+            overflow: hidden;
+            position: relative;
+            left: -8px;
+            top: -8px;
+            padding-bottom: 4px;
+            display: flex;
+            flex-flow: wrap;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        #sign-menu > div:nth-child(1) {
+            transition: 0 !important;
+            opacity: 1;
+        }
+
+        #sign-menu.sign-menu-hidden > div:nth-child(1) {
+            opacity: 0;
+        }
+
+        .sign-menu-visible {
+            transition: 0.3s;
+            transition-timing-function: ease-in;
+            width: calc(108px * 6 + 4px);
+            height: calc(108px * 4);
+        }
+
+        .sign-menu-hidden {
+            transition: 0.3s;
+            transition-timing-function: ease-out;
+            width: 0;
+            height: 0;
+        }
+
+        .sign-menu-item {
+            background-size: contain;
+            background-repeat: no-repeat;
+            border: 4px solid transparent;
+            margin-left: 4px;
+            margin-top: 4px;
+            height: 96px;
+            width: 96px;
+            pointer-events: all;
+        }
+
+        .sign-menu-item:hover {
+            transition: 0.1s;
+            background-color: #8886;
+        }
+
+        .sign-menu-item-disabled {
+            background-color: #333;
+            background-size: contain;
+            background-repeat: no-repeat;
+            border: 4px solid transparent;
+            margin-left: 4px;
+            margin-top: 4px;
+            height: 96px;
+            opacity: 0.5;
+            width: 96px;
+        }
+
+        #video, #canvas {
+            /* display: none; */
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+        }
+
+        img.github {
+            width: 20px;
+            height: 20px;
+            margin: 2px;
+            pointer-events: all;
+            vertical-align: middle;
+            text-align: center;
+            margin-left: 5px;
+        }
+    </style>
+    <link rel="stylesheet" href="draggablebox.css">
+    <style>
+        #palette {
+            background-color: #f0f3;
+            position: absolute;
+            width: 150px;
+            height: 525px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .info {
+            font-family: monospace;
+            font-size: 14px;
+
+            background-color: #1f2125;
+            background-color: #383a3f;
+            width: 200px;
+            height: 500px;
+            padding: 4px;
+            border-radius: 0 0 10px 0;
+        }
+
+        ul {
+            display: contents;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="titlebar">
+        <div class="titlebar-title"><span class="no-drag">Bob Rust FULLSCREEN</span></div>
+        <div id="btnClose" class="close-button titlebar-button no-drag"></div>
+        <div id="btnSize" class="size-button titlebar-button no-drag"></div>
+    </div>
+    <div id="content">
+        <div id="menu" class="menu-hidden">
+            <span class="no-drag">Menu</span>
+            <button id="btnMenuSetTexture"><span class="no-drag">Set Texture</span></button>
+            <button id="btnMenuReset"><span class="no-drag">Reset Texture Area</span></button>
+            <button id="btnMenuStart" disabled><span class="no-drag">Start Drawing</span></button>
+            <button id="btnMenuAbout"><span class="no-drag">About</span></button>
+        </div>
+
+        <div class="info">
+            <ul>
+                <li>Information</li>
+                <li></li>
+                <li>Rust: <span id="spanHasRust">false</span></li>
+                <li>Capture: <span id="spanHasCapture">false</span></li>
+            </ul>
+        </div>
+
+        <div>
+            <div id="sign-icon"><div id="sign-menu" class="sign-menu-hidden"></div></div>
+            <div id="palette"></div>
+            <video id="video" style="display:none"></video>
+            <canvas id="canvas" style="display:none"></canvas>
+        </div>
+    </div>
+    <div id="drag-div"></div>
+
+    <script src="../src/draggablebox.js"></script>
+    <script src="../src/fullscreen_index.js"></script>
+    <script src="../src/signmenu.js"></script>
+    <script src="../src/rust_test.js"></script>
+</body>
+</html>
