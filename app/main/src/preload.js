@@ -1,29 +1,29 @@
-const { contextBridge, ipcRenderer } = require('electron')
-var fs = require('fs')
+const { contextBridge, ipcRenderer } = require('electron');
+var fs = require('fs');
 
 contextBridge.exposeInMainWorld('Access', {
     close: () => {
-        ipcRenderer.invoke('closeBrowserWindow')
+        ipcRenderer.invoke('closeBrowserWindow');
     },
     maximize: () => {
-        ipcRenderer.invoke('maximizeBrowserWindow')
+        ipcRenderer.invoke('maximizeBrowserWindow');
     },
     minimize: () => {
-        ipcRenderer.invoke('minimizeBrowserWindow')
+        ipcRenderer.invoke('minimizeBrowserWindow');
     },
     tryMoveWindowToCursorMonitor: () => {
-        ipcRenderer.invoke('tryMoveWindowToCursorMonitor')
+        ipcRenderer.invoke('tryMoveWindowToCursorMonitor');
     },
     getSigns: () => {
-        return fs.readdirSync('app/renderer/public/signs')
+        return fs.readdirSync('app/renderer/public/signs');
     },
     openTextureDialog: () => {
-        return ipcRenderer.invoke('openTextureDialog')
+        return ipcRenderer.invoke('openTextureDialog');
     },
     openBrowserLink: (link) => {
-        ipcRenderer.invoke('openBrowserLink', link)
+        ipcRenderer.invoke('openBrowserLink', link);
     }
 })
 
 
-require('./rustutils.js')
+require('./rustutils.js');

@@ -1,32 +1,32 @@
-const { readFileSync } = require('fs')
+const { readFileSync } = require('fs');
 
 const DEFAULT_SHAPE = 1;
-const DEFAULT_OPACITY = 2;
+const DEFAULT_OPACITY = 1;
 
 // INFO: 'readline' does not work because sometimes it stops working randomly and
 //                  does not read the file until another file has been loaded.
 async function parseBorstFile(path) {
     try {
-        const lines = readFileSync(path, 'utf8').split('\n')
+        const lines = readFileSync(path, 'utf8').split('\n');
 
         let data = {
             width: 0,
             height: 0,
             instructions: [],
-        }
+        };
 
-        let hasHeader = false
+        let hasHeader = false;
         for(let line in lines) {
-            line = lines[line].trim()
+            line = lines[line].trim();
             if(!hasHeader) {
-                let parts = line.split(',')
-                data.width = parseInt(parts[0])
-                data.height = parseInt(parts[1])
-                hasHeader = true
+                let parts = line.split(',');
+                data.width = parseInt(parts[0]);
+                data.height = parseInt(parts[1]);
+                hasHeader = true;
                 continue;
             }
 
-            let parts = line.split(',')
+            let parts = line.split(',');
             data.instructions.push({
                 x: parseFloat(parts[0]),
                 y: parseFloat(parts[1]),
@@ -34,10 +34,10 @@ async function parseBorstFile(path) {
                 color: parseInt(parts[3], 16),
                 opacity: DEFAULT_OPACITY,
                 shape: DEFAULT_SHAPE,
-            })
+            });
         }
 
-        return data
+        return data;
     } catch(e) {
         throw e;
     }
@@ -54,10 +54,10 @@ async function parseImageFile(path, settings) {
         width: 0,
         height: 0,
         instructions: [],
-    }
+    };
 
-    return data
+    return data;
 }
 
-exports.parseBorstFile = parseBorstFile
-exports.parseImageFile = parseImageFile
+exports.parseBorstFile = parseBorstFile;
+exports.parseImageFile = parseImageFile;

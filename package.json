@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "author": "HardCoded, Sekwah",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "electron": "^12.0.0"
   },
