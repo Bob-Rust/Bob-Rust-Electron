@@ -1,6 +1,6 @@
-const { contextBridge, desktopCapturer, ipcRenderer } = require('electron')
-const info = require('./util/rustinfo.js')
-const borst = require('./util/borst.js')
+const { contextBridge, desktopCapturer, ipcRenderer } = require('electron');
+const info = require('./util/rustinfo.js');
+const borst = require('./util/borst.js');
 
 /**
  * The validation points relative to the painting panel in rust.
@@ -28,20 +28,20 @@ const points = {
         4: { x: 106, y: 131 },
         5: { x: 127, y: 131 },
     },
-}
+};
 
 const area = {
     x_min: 0,
     x_max: 0,
     y_min: 0,
     y_max: 0,
-}
+};
 
 const settings = {
     size: 0,
     shape: 0,
     opacity: 0,
-}
+};
 
 contextBridge.exposeInMainWorld('Rust', {
     getSize: () => settings.size,
@@ -88,7 +88,7 @@ async function startDrawing(path) {
         let promise = method(path).then(startDrawingImage).catch((err) => {
             console.warn(err);
             ipcRenderer.invoke('setIgnoreMouseEvents', false);
-        })
+        });
 
         await promise;
     }

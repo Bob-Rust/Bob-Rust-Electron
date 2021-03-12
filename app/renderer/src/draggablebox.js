@@ -6,7 +6,7 @@
  * ```
  * let draggable = new ResizableBox(element, () => {
  *     // Called when the box area is updated
- * })
+ * });
  * ```
  */
 
@@ -101,7 +101,7 @@ class ResizableBox {
                 this.updateBoxStyle();
             },
             up: (e) => this.updateDragBoxEnd()
-        })
+        });
 
         ResizableBox.makeDraggable(this.drag_tl, { move: (e) => this.updateDragBox(e.clientX, e.clientY, true , true ), up: (e) => this.updateDragBoxEnd() })
         ResizableBox.makeDraggable(this.drag_tr, { move: (e) => this.updateDragBox(e.clientX, e.clientY, false, true ), up: (e) => this.updateDragBoxEnd() })

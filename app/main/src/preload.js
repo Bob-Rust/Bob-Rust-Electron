@@ -23,7 +23,7 @@ contextBridge.exposeInMainWorld('Access', {
     openBrowserLink: (link) => {
         ipcRenderer.invoke('openBrowserLink', link);
     }
-})
+});
 
 
 require('./rustutils.js');

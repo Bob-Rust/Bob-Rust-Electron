@@ -30,7 +30,7 @@ btnStartDrawing.addEventListener('click', (e) => {
             document.querySelector('#drag-div').style.backgroundColor = '';
             document.body.backgroundColor = '';
             btnStartDrawing.disabled = false;
-        })
+        });
     }); 
 });
 

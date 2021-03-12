@@ -4,7 +4,7 @@ document.querySelector('#btnSize').addEventListener('click', (e) => window.Acces
 // TODO: Tell the player that no window "Rust" was found
 // TODO: Make sure that "Rust" is the active window while drawing
 /*
-var menu = document.querySelector('#menu')
+var menu = document.querySelector('#menu');
 document.querySelector('#btnMenu').addEventListener('click', (e) => {
     window.Rust.checkCapture((enabled) => {
         btnMenuStart.disabled = !enabled;

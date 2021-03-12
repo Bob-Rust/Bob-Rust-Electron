@@ -1,12 +1,11 @@
-const { app, BrowserWindow, globalShortcut, ipcMain, screen, dialog, shell } = require('electron')
-const path = require('path')
+const { app, BrowserWindow, globalShortcut, ipcMain, screen, dialog, shell } = require('electron');
+const path = require('path');
 
-// TODO: Create a shadow around the minified window to make it easer to spot.
-const WINDOW_MIN_WIDTH = 240; //652
-const WINDOW_MIN_HEIGHT = 480; // 456
+const WINDOW_MIN_WIDTH = 240;
+const WINDOW_MIN_HEIGHT = 480;
 
-let mini_win = null
-let maxi_win = null
+let mini_win = null;
+let maxi_win = null;
 
 function createWindow() {
 	const win = new BrowserWindow({
@@ -27,20 +26,20 @@ function createWindow() {
 			nodeIntegration: false,
 			/* devTools: false, */
 		}
-	})
+	});
 	
-	win.loadFile('app/renderer/public/index.html')
-	win.setAlwaysOnTop(true, "screen-saver", 1)
-	win.openDevTools({ mode: 'detach' })
+	win.loadFile('app/renderer/public/index.html');
+	win.setAlwaysOnTop(true, "screen-saver", 1);
+	win.openDevTools({ mode: 'detach' });
 	/*
 	 * The window frame blocks mouse events 4 pixels But only after hide()/ show()/ hide() is called!??!
 	 * This is probably a bug?
 	 */
-	mini_win = win
+	mini_win = win;
 
 	win.on('ready-to-show', () => {
-		win.show()
-	})
+		win.show();
+	});
 
 	{
 		const win2 = new BrowserWindow({
@@ -61,7 +60,7 @@ function createWindow() {
 				nodeIntegration: false,
 				/* devTools: false, */
 			}
-		})
+		});
 		
 		win2.loadFile('app/renderer/public/fullscreen_index.html');
 		win2.setAlwaysOnTop(true, "screen-saver", 1);
@@ -122,7 +121,7 @@ ipcMain.handle('closeBrowserWindow', async (event) => {
 ipcMain.handle('maximizeBrowserWindow', async (event) => {
 	let size = screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).bounds;
 	mini_win.hide();
-	maxi_win.setBounds(size, true);
+	maxi_win.setBounds(size);
 	maxi_win.show();
 	maxi_win.focusOnWebView();
 });

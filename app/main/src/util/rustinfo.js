@@ -302,7 +302,7 @@ function startCapture(callback) {
         }
 
         return false;
-    })
+    });
 }
 
 function checkCapture(callback) {
