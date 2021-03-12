@@ -27,7 +27,7 @@ function createWindow() {
 			/* devTools: false, */
 		}
 	});
-	
+
 	win.loadFile('app/renderer/public/index.html');
 	win.setAlwaysOnTop(true, "screen-saver", 1);
 	win.openDevTools({ mode: 'detach' });
@@ -61,7 +61,7 @@ function createWindow() {
 				/* devTools: false, */
 			}
 		});
-		
+
 		win2.loadFile('app/renderer/public/fullscreen_index.html');
 		win2.setAlwaysOnTop(true, "screen-saver", 1);
 		win2.openDevTools({ mode: 'detach' });
@@ -121,8 +121,8 @@ ipcMain.handle('closeBrowserWindow', async (event) => {
 ipcMain.handle('maximizeBrowserWindow', async (event) => {
 	let size = screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).bounds;
 	mini_win.hide();
-	maxi_win.setBounds(size);
 	maxi_win.show();
+	maxi_win.setBounds(size);
 	maxi_win.focusOnWebView();
 });
 
