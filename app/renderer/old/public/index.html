@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Bob Rust</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+
+    
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #383a3f;
+        }
+
+        #titlebar {
+            -webkit-app-region: drag;
+        }
+
+        .size-button {
+            background-image: url('images/minimized.png');
+        }
+
+        #footer {
+            background-color: #677584;
+            position: absolute;
+            height: 24px;
+            width: 100%;
+            bottom: -0;
+            user-select: none;
+            pointer-events: none;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div id="titlebar">
+        <div class="titlebar-title"><span class="no-drag">Bob Rust</span></div>
+        <div id="btnClose" class="close-button titlebar-button no-drag"></div>
+        <div id="btnSize" class="size-button titlebar-button no-drag"></div>
+    </div>
+
+    <div id="content">
+        <div style="text-align: center;">
+            <p>Maximize to get started</p>
+            <p>Write about this or maybe add buttons here 🤔</p>
+        </div>
+
+        <div id="footer">
+            <a href="https://github.com/Kariaro/Bob-Rust-Electron" target="_blank">
+                <div><img class="github" src="images/GitHub-Mark-32px.png" width="20" height="20" /> Authors HardCoded & Sekwah</div>
+            </a>
+        </div>
+    </div>
+    
+    <script src="../src/index.js"></script>
+</body>
+</html>

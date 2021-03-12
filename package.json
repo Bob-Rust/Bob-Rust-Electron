@@ -5,7 +5,7 @@
   "private": true,
   "main": "app/main/src/electron.js",
   "scripts": {
-    "start": "electron . --enable-transparent-visuals --disable-gpu",
+    "start": "lerna run start --parallel",
     "sync": "lerna bootstrap"
   },
   "workspaces": [
@@ -22,7 +22,7 @@
     "robotjs": "^0.6.0"
   },
   "devDependencies": {
-    "lerna": "^4.0.0",
-    "electron-builder": "^22.10.5"
+    "electron-builder": "^22.10.5",
+    "lerna": "^3.22.1"
   }
 }

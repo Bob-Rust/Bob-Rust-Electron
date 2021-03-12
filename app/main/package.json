@@ -1,17 +1,20 @@
 {
   "name": "main",
   "private": true,
-  "version": "1.1.2",
+  "version": "1.0.0",
   "main": "src/electron.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron . --enable-transparent-visuals --disable-gpu",
+    "postinstall": "electron-rebuild"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "discord-rich-presence": "^0.0.8",
-    "electron-is-dev": "^1.2.0"
+    "electron-is-dev": "^1.2.0",
+    "robotjs": "^0.6.0"
   },
   "devDependencies": {
-    "electron": "^12.0.1"
+    "electron": "^12.0.1",
+    "electron-rebuild": "^2.3.5"
   }
 }
