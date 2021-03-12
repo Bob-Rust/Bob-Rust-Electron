@@ -48,47 +48,49 @@ contextBridge.exposeInMainWorld('Rust', {
     getShape: () => settings.shape,
     getOpacity: () => settings.opacity,
     checkCapture: (callback) => {
-        info.checkCapture(callback)
+        info.checkCapture(callback);
     },
     startCapture: (callback) => {
-        info.startCapture(callback)
+        info.startCapture(callback);
     },
     startDrawing: async (path) => {
-        return startDrawing(path)
+        return startDrawing(path);
     },
     setDrawingArea: (rect) => {
-        area.x_min = rect.x_min
-        area.x_max = rect.x_max
-        area.y_min = rect.y_min
-        area.y_max = rect.y_max
+        area.x_min = rect.x_min;
+        area.x_max = rect.x_max;
+        area.y_min = rect.y_min;
+        area.y_max = rect.y_max;
     },
     getInfoSettings: () => {
-        return info.settings
+        return info.settings;
     }
-})
+});
 
-function startDrawing(path) {
+async function startDrawing(path) {
     if(path == null) {
         // TODO: Create a modal that tells the user that no texture has been selected!
-        alert('No texture selected')
+        alert('No texture selected');
         return;
     }
 
     let method = null;
     if(path.endsWith('.borst')) {
-        method = borst.parseBorstFile
+        method = borst.parseBorstFile;
     } else {
-        method = borst.parseImageFile
+        method = borst.parseImageFile;
     }
 
     if(method) {
-        console.log('---------------------------------------')
-        console.log('Start Drawing From Path: ' + path)
+        console.log('---------------------------------------');
+        console.log('Start Drawing From Path: ' + path);
 
-        method(path).then(startDrawingImage).catch((err) => {
-            console.warn(err)
-            ipcRenderer.invoke('setIgnoreMouseEvents', false)
+        let promise = method(path).then(startDrawingImage).catch((err) => {
+            console.warn(err);
+            ipcRenderer.invoke('setIgnoreMouseEvents', false);
         })
+
+        await promise;
     }
 }
 
@@ -98,7 +100,7 @@ function sleep(ms) {
 
 // TODO: Make sure we cannot press anywhere else then Rust.. Otherwise it could cause bad things to happen..
 async function startDrawingImage(data) {
-    ipcRenderer.invoke('setIgnoreMouseEvents', true)
+    ipcRenderer.invoke('setIgnoreMouseEvents', true);
 
     // TODO: Better placement of the image
     let width = Math.max(data.width, data.height);
@@ -106,158 +108,99 @@ async function startDrawingImage(data) {
     let xo = (width - data.width) / 2;
     let yo = (height - data.height) / 2;
 
-    let area_x = area.x_min
-    let area_y = area.y_min
-    let area_width = area.x_max - area.x_min
-    let area_height = area.y_max - area.y_min
+    let area_x = area.x_min;
+    let area_y = area.y_min;
+    let area_width = area.x_max - area.x_min;
+    let area_height = area.y_max - area.y_min;
 
     // Default delay is 10 ms
-    info.setMouseDelay(30)
+    info.setMouseDelay(30);
     
     // Calculate the speed
     /* Make sure the game has focus */ {
         let failed = 0;
         while(settings.size != 0) {
-            info.setBrushSize(0)
+            info.setBrushSize(0);
             if(failed++ > 10) break;
-            await sleep(10)
+            await sleep(10);
         } failed = 0;
 
         while(settings.size != 1) {
-            info.setBrushSize(1)
+            info.setBrushSize(1);
             if(failed++ > 10) break;
-            await sleep(10)
+            await sleep(10);
         }
     }
 
     // Convert instruction color into index
     for(let inst in data.instructions) {
-        inst = data.instructions[inst]
-        inst.color = info.getClosestColor(inst.color).index
+        inst = data.instructions[inst];
+        inst.color = info.getClosestColor(inst.color).index;
     }
 
     {
-        let inst = data.instructions[0]
-        info.setBrushSize(inst.size)
-        info.setBrushShape(inst.shape)
-        info.setBrushOpacity(inst.opacity)
-        info.setBrushColor(inst.color)
+        let inst = data.instructions[0];
+        info.setBrushSize(inst.size);
+        info.setBrushShape(inst.shape);
+        info.setBrushOpacity(1);
+        info.setBrushColor(inst.color);
     }
 
-    let last_size = -1
-    let last_color = -1
-    for(i = 0; i < Math.min(1500, data.instructions.length); i++) {
-        let inst = data.instructions[i]
+    /*
+    {
+        info.setBrushSize(5);
+        info.setBrushShape(3);
+    }
+
+    for(i = 0; i < 16; i++) {
+        info.setBrushColor(i + ((i > 10) ? 4:0));
+
+        for(j = 0; j < 6; j++) {
+            await sleep(15);
+            info.setBrushOpacity(5 - j);
+
+            let tx = area_x + ((i + 0.5) / 16) * area_width;
+            let ty = area_y + ((j + 0.5) / 16) * area_height;
+            info.move(tx, ty);
+            await sleep(15);
+            await info.checkMouse(tx, ty);
+            info.click();
+        }
+    }
+
+    if(true) {
+        ipcRenderer.invoke('setIgnoreMouseEvents', false);
+        return;
+    }
+    */
+
+    let last_size = -1;
+    let last_color = -1;
+    for(i = 0; i < Math.min(10000, data.instructions.length); i++) {
+        let inst = data.instructions[i];
 
         if(last_size != inst.size) {
-            info.setBrushSize(inst.size)
-            last_size = inst.size
+            info.setBrushSize(inst.size);
+            last_size = inst.size;
         }
 
         if(last_color != inst.color) {
-            info.setBrushColor(inst.color)
-            last_color = inst.color
+            info.setBrushColor(inst.color);
+            last_color = inst.color;
         }
 
 
         let tx = area_x + ((inst.x + xo) / width) * area_width;
         let ty = area_y + ((inst.y + yo) / height) * area_height;
-        info.move(tx, ty)
-        await sleep(30)
-        await info.checkMouse(tx, ty)
-        info.click()
-    }
+        info.move(tx, ty);
+        await sleep(15);
+        await info.checkMouse(tx, ty);
+        info.click();
 
-    ipcRenderer.invoke('setIgnoreMouseEvents', false)
-}
-
-
-// TODO: vvv - bad code
-const fields = {
-    size: -1,
-    color: -1,
-}
-
-async function waitForCompletion(called, checked, interval, tries) {
-    for(i = 0; i < tries; i++) {
-        called()
-        await sleep(interval);
-        if(checked()) return;
-    }
-
-    throw 'Failed to complete after ' + tries + ' times!';
-} 
-
-// TODO: Make sure that everything is set before we draw the circle
-//       Using the settings field we can check
-async function drawShapeTest(inst, tx, ty) {
-    await waitForCompletion(
-        () => { info.setBrushSize(inst.size) },
-        () => { return settings.size == inst.size },
-        50, 30
-    );
-
-    // TODO: Use the example blob to check if the color has changed!
-    /*
-    await waitForCompletion(() => {
-        info.setBrushColor(inst.size)
-        return settings.size == inst.size
-    }, 50, 30)
-    */
-
-    if(fields.color != inst.color.index) {
-        info.setBrushColor(inst.color)
-        fields.color = inst.color.index
-    }
-
-    info.move(tx, ty)
-    info.click()
-}
-
-async function drawImageTest(data) {
-    ipcRenderer.invoke('setIgnoreMouseEvents', true)
-
-    let width = Math.max(data.width, data.height);
-    let height = Math.max(data.width, data.height);
-    let xo = (width - data.width) / 2;
-    let yo = (height - data.height) / 2;
-
-    let area_x = draw_area.x_min
-    let area_y = draw_area.y_min
-    let area_width = draw_area.x_max - draw_area.x_min
-    let area_height = draw_area.y_max - draw_area.y_min
-    
-    info.setMouseDelay(50)
-
-    /* Make sure the game has focus */ {
-        let failed = 0;
-        while(settings.size != 0) {
-            info.setBrushSize(0)
-            if(failed++ > 10) break;
-            await sleep(10)
-        } failed = 0;
-
-        while(settings.size != 1) {
-            info.setBrushSize(1)
-            if(failed++ > 10) break;
-            await sleep(10)
+        if((i % 10) == 0) {
+            console.log(i + '/' + data.instructions.length);
         }
     }
-    
-    {
-        let inst = data.instructions[0]
-        info.setBrushSize(inst.size)
-        info.setBrushShape(inst.shape)
-        info.setBrushOpacity(inst.opacity)
-        info.setBrushColor(inst.color)
-    }
-    
-    for(i = 0; i < 500; i++) {
-        let inst = data.instructions[i]
-        let tx = area_x + ((inst.x + xo) / width) * area_width;
-        let ty = area_y + ((inst.y + yo) / height) * area_height;
-        await drawShapeTest(inst, tx, ty)
-    }
 
-    ipcRenderer.invoke('setIgnoreMouseEvents', false)
+    ipcRenderer.invoke('setIgnoreMouseEvents', false);
 }
