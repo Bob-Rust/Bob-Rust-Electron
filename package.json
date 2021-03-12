@@ -6,6 +6,8 @@
   "main": "app/main/src/electron.js",
   "scripts": {
     "start": "lerna run start --parallel",
+    "build": "lerna run build --stream",
+    "electron-dist": "lerna run build --stream && electron-builder --config electron-builder/config.js",
     "sync": "lerna bootstrap"
   },
   "workspaces": [

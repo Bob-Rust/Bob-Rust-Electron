@@ -3,14 +3,14 @@ We still need to fully automate this with https://github.com/sekwah41/primitive 
 
 The results will get faster and higher quality re-creations as we fine-tune the code though obviously there is a limit :P
 
-## Building
-To build this you will need to install electron 12.0.0 and install robotjs and rebuild it for the current version of electron.
+## Currently In Development
+This is just a quick note to state that this program is currently in heavy development.
 
-```
-npm install electron@12.0.0
-npm install robotjs
-npm rebuild --runtime=electron --target=12.0.0 --disturl=https://atom.io/download/atom-shell --abi=83
-```
+## Building
+To build this you will need to make sure you have installed yarn. You can get this using `npm install -g yarn`.
+Once you have that running `yarn` in the  main directory should set everything up for you.
+
+To build a distributable version of the project just run `yarn electron-dist`.
 
 ## In game
 ![In game](.github/assets/screenshots/ingame.jpg)
