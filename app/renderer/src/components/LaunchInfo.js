@@ -5,7 +5,7 @@ import './Common.scss';
 
 function LaunchInfo() {
     return <div id="content">
-        <div style={{"text-align": "center"}}>
+        <div style={{"textAlign": "center"}}>
             <p>Maximize to get started</p>
             <p>Write about this or maybe add buttons here 🤔</p>
         </div>

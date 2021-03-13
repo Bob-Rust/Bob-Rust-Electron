@@ -2,8 +2,18 @@ const { app, BrowserWindow, globalShortcut, ipcMain, screen, dialog, shell } = r
 const path = require('path');
 
 // TODO: Create a shadow around the minified window to make it easer to spot.
-const WINDOW_MIN_WIDTH = 240; //652
-const WINDOW_MIN_HEIGHT = 480; // 456
+
+/*
+ * TODO: When a window frame is created it does not register when a mouse leaves the window
+ * making some :hover css styles not return back to normal when the mouse leaves the window.
+ * 
+ * This is fixed when calling hide()/ show()/ hide()/ show() on the target window.
+ * The fixed the window frame will block mouse events 4 pixels from the edge of the window.
+ * 
+ * This is probably a bug.
+ */
+const WINDOW_MIN_WIDTH = 240;
+const WINDOW_MIN_HEIGHT = 480;
 const isDev = require('electron-is-dev');
 
 let mini_win = null;
@@ -20,7 +30,7 @@ function createWindow() {
 		minHeight: WINDOW_MIN_HEIGHT,
 		frame: false,
 		title: "Bob Rust",
-		transparent: false,
+		/* transparent: false, This is default */
 		maximizable: false,
 		backgroundColor: '#383a3f',
 		resizable: false,
@@ -34,7 +44,7 @@ function createWindow() {
 			nativeWindowOpen: true
 			/* devTools: false, */
 		}
-	})
+	});
 
 	// Was app/renderer/public/index.html
 	const mainUrl = isDev ? "http://localhost:3000/" : url.format({
@@ -46,18 +56,14 @@ function createWindow() {
 	win.loadURL(mainUrl);
 	win.setAlwaysOnTop(true, "screen-saver", 1);
 	if(isDev) win.openDevTools({ mode: 'detach' });
-	/*
-	 * The window frame blocks mouse events 4 pixels But only after hide()/ show()/ hide() is called!??!
-	 * This is probably a bug?
-	 */
-	mini_win = win
+	mini_win = win;
 
 	win.on('ready-to-show', () => {
 		win.show();
 		// To stop touch screens zooming like a browser
 		win.webContents.setZoomFactor(1);
 		win.webContents.setVisualZoomLevelLimits(1, 1);
-	})
+	});
 
 	{
 		const win2 = new BrowserWindow({
@@ -96,16 +102,16 @@ function createWindow() {
 	// Disable reloading
 	/*
 	win.on('focus', (event) => {
-		globalShortcut.register('CommandOrControl+R', () => {})
-		globalShortcut.register('CommandOrControl+Shift+R', () => {})
-		globalShortcut.register('F5', () => {})
-	})
+		globalShortcut.register('CommandOrControl+R', () => {});
+		globalShortcut.register('CommandOrControl+Shift+R', () => {});
+		globalShortcut.register('F5', () => {});
+	});
 
 	win.on('blur', (event) => {
-		globalShortcut.unregister('CommandOrControl+R')
-		globalShortcut.unregister('CommandOrControl+Shift+R')
-		globalShortcut.unregister('F5')
-	})
+		globalShortcut.unregister('CommandOrControl+R');
+		globalShortcut.unregister('CommandOrControl+Shift+R');
+		globalShortcut.unregister('F5');
+	});
 	*/
 
 	globalShortcut.register('F10', () => {
@@ -113,27 +119,27 @@ function createWindow() {
 		maxi_win.focus();
 	});
 
-	setupWindowOpenHandler(win);
+	setupWindowOpenHandler(mini_win);
 	setupWindowOpenHandler(maxi_win);
 }
 
 function setupWindowOpenHandler(win) {
 	win.webContents.setWindowOpenHandler(({ url }) => {
-		console.log("Test", url);
-		if (url.startsWith('https://github.com/')) {
+		if(url.startsWith('https://github.com/')) {
 			shell.openExternal(url);
-			return true;
 		}
-		return false
-	})
+
+		return {action: 'deny'};
+	});
+
 	win.webContents.on('did-create-window', (childWindow) => {
 		childWindow.webContents('will-navigate', (e) => {
-			e.preventDefault()
-		})
-	})
+			e.preventDefault();
+		});
+	});
 }
 
-app.whenReady().then(createWindow)
+app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
 	if(process.platform !== 'darwin') {
@@ -145,7 +151,7 @@ app.on('activate', () => {
 	if(BrowserWindow.getAllWindows().length === 0) {
 		createWindow();
 	}
-})
+});
 
 // icpMessages
 ipcMain.handle('closeBrowserWindow', async (event) => {
@@ -160,15 +166,15 @@ ipcMain.handle('closeBrowserWindow', async (event) => {
 	} catch(e) {
 		console.warn(e);
 	}
-})
+});
 
 ipcMain.handle('maximizeBrowserWindow', async (event) => {
 	let size = screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).bounds;
 	mini_win.hide();
-	maxi_win.setBounds(size, true);
 	maxi_win.show();
+	maxi_win.setBounds(size);
 	maxi_win.focusOnWebView();
-})
+});
 
 ipcMain.handle('minimizeBrowserWindow', async (event) => {
 	maxi_win.hide();
@@ -176,7 +182,7 @@ ipcMain.handle('minimizeBrowserWindow', async (event) => {
 	mini_win.focusOnWebView();
 
 	// TODO: Reposition the mini window to the center of the screen.
-})
+});
 
 ipcMain.handle('tryMoveWindowToCursorMonitor', async (event, enable) => {
 	let bounds = screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).bounds;
@@ -184,9 +190,9 @@ ipcMain.handle('tryMoveWindowToCursorMonitor', async (event, enable) => {
 
 	if(win_bounds.x != bounds.x || win_bounds.y != bounds.y
 	|| win_bounds.width != bounds.width || win_bounds.height != bounds.height) {
-		maxi_win.setBounds(bounds, true)
+		maxi_win.setBounds(bounds);
 	}
-})
+});
 
 ipcMain.handle('openTextureDialog', async (event, enable) => {
 	let win = BrowserWindow.fromId(event.sender.id);
@@ -198,7 +204,7 @@ ipcMain.handle('openTextureDialog', async (event, enable) => {
 				{ name: 'Images', extensions: [ 'jpg', 'jpeg', 'png', 'gif' ] },
 				{ name: 'All Files', extensions: [ '*' ] },
 			],
-		})
+		});
 	}
 });
 
@@ -215,7 +221,7 @@ ipcMain.handle('openBrowserLink', async (event, href) => {
 
 // =======================
 
-let robot = require('robotjs');;
+let robot = require('robotjs');
 
 ipcMain.handle('robot_mouseClick', async (event) => {
 	robot.mouseClick();
