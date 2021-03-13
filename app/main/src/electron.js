@@ -19,8 +19,10 @@ function createWindow() {
 		minWidth: WINDOW_MIN_WIDTH,
 		minHeight: WINDOW_MIN_HEIGHT,
 		frame: false,
+		title: "Bob Rust",
 		transparent: false,
 		maximizable: false,
+		backgroundColor: '#383a3f',
 		resizable: false,
 		show: false,
 		webPreferences: {
@@ -29,6 +31,7 @@ function createWindow() {
 			contextIsolation: true,
 			enableRemoteModule: false,
 			nodeIntegration: false,
+			nativeWindowOpen: true
 			/* devTools: false, */
 		}
 	})
@@ -62,6 +65,7 @@ function createWindow() {
 			height: WINDOW_MIN_HEIGHT,
 			minWidth: WINDOW_MIN_WIDTH,
 			minHeight: WINDOW_MIN_HEIGHT,
+			title: "Bob Rust",
 			frame: false,
 			transparent: true,
 			maximizable: false,
@@ -108,6 +112,25 @@ function createWindow() {
 		mini_win.focus();
 		maxi_win.focus();
 	});
+
+	setupWindowOpenHandler(win);
+	setupWindowOpenHandler(maxi_win);
+}
+
+function setupWindowOpenHandler(win) {
+	win.webContents.setWindowOpenHandler(({ url }) => {
+		console.log("Test", url);
+		if (url.startsWith('https://github.com/')) {
+			shell.openExternal(url);
+			return true;
+		}
+		return false
+	})
+	win.webContents.on('did-create-window', (childWindow) => {
+		childWindow.webContents('will-navigate', (e) => {
+			e.preventDefault()
+		})
+	})
 }
 
 app.whenReady().then(createWindow)

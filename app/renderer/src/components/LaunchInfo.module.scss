@@ -1,0 +1,27 @@
+
+
+.Footer {
+  background-color: #677584;
+  position: absolute;
+  height: 24px;
+  width: 100%;
+  bottom: -0;
+  user-select: none;
+  font-size: 11px;
+  text-align: left;
+
+  div a span {
+        position: absolute;
+        top: 4px;
+        margin-left: 2px;
+  }
+}
+
+.GitHub {
+  width: 20px;
+  height: 20px;
+  pointer-events: all;
+  vertical-align: middle;
+  text-align: center;
+  margin: 2px 2px 2px 5px;
+}

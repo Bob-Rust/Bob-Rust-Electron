@@ -1,0 +1,60 @@
+
+.TitleBar {
+  background-color: #1f2125;
+  flex-direction: row-reverse;
+  display: flex;
+  color: white;
+  height: 20px;
+  width: 100%;
+}
+
+.Title {
+  position: absolute;
+  font-size: 13px;
+  padding: 1px 2px 0 3px;
+  left: 0;
+}
+
+.Draggable {
+  -webkit-app-region: drag;
+}
+
+.Button {
+  position: relative;
+  shape-rendering: crispEdges;
+  cursor: default;
+  transition: 0.1s;
+  opacity: 0.5;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.SizeButton {
+  width: 20px;
+  height: 20px;
+
+  &:hover {
+    background-color: #282b2e;
+  }
+}
+
+.Minimize {
+  background-image: url('../../images/minimize.png');
+}
+
+.Maximize {
+  background-image: url('../../images/maximize.png');
+}
+
+.CloseButton {
+  transition: 0.05s;
+  background-image: url('../../images/close.png');
+  width: 20px;
+  height: 20px;
+
+  &:hover {
+    background-color: #c80000;
+  }
+}
