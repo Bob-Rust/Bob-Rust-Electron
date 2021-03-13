@@ -121,8 +121,8 @@ ipcMain.handle('closeBrowserWindow', async (event) => {
 ipcMain.handle('maximizeBrowserWindow', async (event) => {
 	let size = screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).bounds;
 	mini_win.hide();
-	maxi_win.setBounds(size);
 	maxi_win.show();
+	maxi_win.setBounds(size);
 	maxi_win.focusOnWebView();
 });
 
@@ -140,7 +140,7 @@ ipcMain.handle('tryMoveWindowToCursorMonitor', async (event, enable) => {
 
 	if(win_bounds.x != bounds.x || win_bounds.y != bounds.y
 	|| win_bounds.width != bounds.width || win_bounds.height != bounds.height) {
-		maxi_win.setBounds(bounds, true);
+		maxi_win.setBounds(bounds);
 	}
 });
 

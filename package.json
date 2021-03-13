@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Made by HardCoded and Sekwah",
   "main": "app/main/src/electron.js",
+  "private": true,
   "scripts": {
     "start": "electron . --enable-transparent-visuals --disable-gpu"
   },

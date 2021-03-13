@@ -103,10 +103,10 @@ class ResizableBox {
             up: (e) => this.updateDragBoxEnd()
         });
 
-        ResizableBox.makeDraggable(this.drag_tl, { move: (e) => this.updateDragBox(e.clientX, e.clientY, true , true ), up: (e) => this.updateDragBoxEnd() })
-        ResizableBox.makeDraggable(this.drag_tr, { move: (e) => this.updateDragBox(e.clientX, e.clientY, false, true ), up: (e) => this.updateDragBoxEnd() })
-        ResizableBox.makeDraggable(this.drag_br, { move: (e) => this.updateDragBox(e.clientX, e.clientY, false, false), up: (e) => this.updateDragBoxEnd() })
-        ResizableBox.makeDraggable(this.drag_bl, { move: (e) => this.updateDragBox(e.clientX, e.clientY, true , false), up: (e) => this.updateDragBoxEnd() })
+        ResizableBox.makeDraggable(this.drag_tl, { move: (e) => this.updateDragBox(e.clientX, e.clientY, true , true ), up: (e) => this.updateDragBoxEnd() });
+        ResizableBox.makeDraggable(this.drag_tr, { move: (e) => this.updateDragBox(e.clientX, e.clientY, false, true ), up: (e) => this.updateDragBoxEnd() });
+        ResizableBox.makeDraggable(this.drag_br, { move: (e) => this.updateDragBox(e.clientX, e.clientY, false, false), up: (e) => this.updateDragBoxEnd() });
+        ResizableBox.makeDraggable(this.drag_bl, { move: (e) => this.updateDragBox(e.clientX, e.clientY, true , false), up: (e) => this.updateDragBoxEnd() });
     }
 
     updateDragBox(x, y, x_field, y_field) {
