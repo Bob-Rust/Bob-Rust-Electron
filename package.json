@@ -8,14 +8,28 @@
     "start": "lerna run start --parallel",
     "build": "lerna run build --stream",
     "preelectron-dist": "yarn build",
-    "electron-dist": "electron-builder --config electron-builder/config.js",
+    "electron-dist": "lerna run electron-dist --stream",
     "sync": "lerna bootstrap",
     "pretest-packed": "yarn electron-dist",
-    "test-packed": "\"dist\\win-unpacked\\Bob Ross.exe\""
+    "test-packed": "\"packages\\main\\dist\\win-unpacked\\Bob Rust.exe\""
   },
-  "workspaces": [
-    "app/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/electron-builder",
+      "**/electron-builder/**",
+      "**/electron",
+      "**/electron/**",
+      "**/electron-rebuild",
+      "**/electron-rebuild/**"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bob-Rust/Bob-Rust-Electron"
+  },
   "keywords": [],
   "author": {
     "name": "HardCoded, Sekwah",
@@ -24,13 +38,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.1",
-    "discord-rich-presence": "^0.0.8",
-    "electron-is-dev": "^1.2.0",
-    "robotjs": "^0.6.0"
   },
   "devDependencies": {
-    "electron-builder": "^22.10.5",
     "lerna": "^3.22.1"
   }
 }

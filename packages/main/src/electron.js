@@ -89,7 +89,7 @@ function createWindow() {
 
 		win2.loadURL(secondWindow);
 		win2.setAlwaysOnTop(true, "screen-saver", 1);
-		win2.openDevTools({ mode: 'detach' });
+		if(isDev) win2.openDevTools({ mode: 'detach' });
 		maxi_win = win2;
 	}
 
@@ -113,20 +113,20 @@ function createWindow() {
 		maxi_win.focus();
 	});
 
-	setupWindowOpenHandler(mini_win);
-	setupWindowOpenHandler(maxi_win);
+	setupCommonHandlers(mini_win);
+	setupCommonHandlers(maxi_win);
 }
 
 function pageLocation(location = '') {
 	return isDev ? `http://localhost:3000/#/${location}` : url.format({
-		pathname: path.join(__dirname, `/../../renderer/build/index.html`),
+		pathname: path.join(__dirname, `../renderer/index.html`),
 		hash: `/${location}`,
 		protocol: 'file:',
 		slashes: true
 	});
 }
 
-function setupWindowOpenHandler(win) {
+function setupCommonHandlers(win) {
 	win.webContents.setWindowOpenHandler(({ url }) => {
 		if(url.startsWith('https://github.com/')) {
 			shell.openExternal(url);
@@ -140,10 +140,16 @@ function setupWindowOpenHandler(win) {
 			e.preventDefault();
 		});
 	});
+
+	win.on('closed', () => {
+		app.quit();
+	});
 }
 
 app.whenReady().then(createWindow);
 
+
+// Probably not activated because of the hiding behavior but well keep it in case.
 app.on('window-all-closed', () => {
 	if(process.platform !== 'darwin') {
 		app.quit();

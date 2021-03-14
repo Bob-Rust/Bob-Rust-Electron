@@ -12,5 +12,11 @@ Once you have that running `yarn` in the  main directory should set everything u
 
 To build a distributable version of the project just run `yarn electron-dist`.
 
+There will be warnings at the moment linked to the nsis building due to publishing options though you can ignore those.
+
+## Auto Building
+Currently, there is a github actions setup however will likely need altering for the new setup as a lot has changed.
+Though this can all wait until the program is fully functional.
+
 ## In game
 ![In game](.github/assets/screenshots/ingame.jpg)
