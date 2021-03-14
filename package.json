@@ -11,7 +11,7 @@
     "electron-dist": "lerna run electron-dist --stream",
     "sync": "lerna bootstrap",
     "pretest-packed": "yarn electron-dist",
-    "test-packed": "\"dist\\win-unpacked\\Bob Ross.exe\""
+    "test-packed": "\"packages\\main\\dist\\win-unpacked\\Bob Rust.exe\""
   },
   "workspaces": {
     "packages": [
