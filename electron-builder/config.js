@@ -1,5 +1,5 @@
 const base = {
-    appId: "com.bobross.${name}",
+    appId: "com.bobross.bobrosspainter",
     productName: "Bob Ross",
     remoteBuild: false,
     files: [

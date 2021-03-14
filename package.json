@@ -8,7 +8,8 @@
     "start": "lerna run start --parallel",
     "build": "lerna run build --stream",
     "electron-dist": "lerna run build --stream && electron-builder --config electron-builder/config.js",
-    "sync": "lerna bootstrap"
+    "sync": "lerna bootstrap",
+    "test-packed": "yarn electron-dist && \"dist\\win-unpacked\\Bob Ross.exe\""
   },
   "workspaces": [
     "app/*"
@@ -21,8 +22,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "robotjs": "^0.6.0",
-    "web-vitals": "^1.1.0"
+    "axios": "^0.21.1",
+    "discord-rich-presence": "^0.0.8",
+    "electron-is-dev": "^1.2.0",
+    "robotjs": "^0.6.0"
   },
   "devDependencies": {
     "electron-builder": "^22.10.5",

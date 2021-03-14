@@ -6,15 +6,16 @@ const path = require('path');
 /*
  * TODO: When a window frame is created it does not register when a mouse leaves the window
  * making some :hover css styles not return back to normal when the mouse leaves the window.
- * 
+ *
  * This is fixed when calling hide()/ show()/ hide()/ show() on the target window.
  * The fixed the window frame will block mouse events 4 pixels from the edge of the window.
- * 
+ *
  * This is probably a bug.
  */
 const WINDOW_MIN_WIDTH = 240;
 const WINDOW_MIN_HEIGHT = 480;
 const isDev = require('electron-is-dev');
+const url = require('url');
 
 let mini_win = null;
 let maxi_win = null;
@@ -47,11 +48,7 @@ function createWindow() {
 	});
 
 	// Was app/renderer/public/index.html
-	const mainUrl = isDev ? "http://localhost:3000/" : url.format({
-		pathname: path.join(__dirname, '/../../renderer/build/index.html'),
-		protocol: 'file:',
-		slashes: true
-	});
+	const mainUrl = pageLocation();
 
 	win.loadURL(mainUrl);
 	win.setAlwaysOnTop(true, "screen-saver", 1);
@@ -88,11 +85,8 @@ function createWindow() {
 		});
 
 		// Was app/renderer/public/fullscreen_index.html
-		const secondWindow = isDev ? "http://localhost:3000/" : url.format({
-			pathname: path.join(__dirname, '/../../renderer/build/index.html'),
-			protocol: 'file:',
-			slashes: true
-		});
+		const secondWindow = pageLocation('maximized');
+
 		win2.loadURL(secondWindow);
 		win2.setAlwaysOnTop(true, "screen-saver", 1);
 		win2.openDevTools({ mode: 'detach' });
@@ -121,6 +115,15 @@ function createWindow() {
 
 	setupWindowOpenHandler(mini_win);
 	setupWindowOpenHandler(maxi_win);
+}
+
+function pageLocation(location = '') {
+	return isDev ? `http://localhost:3000/#/${location}` : url.format({
+		pathname: path.join(__dirname, `/../../renderer/build/index.html`),
+		hash: `/${location}`,
+		protocol: 'file:',
+		slashes: true
+	});
 }
 
 function setupWindowOpenHandler(win) {

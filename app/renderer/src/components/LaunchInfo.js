@@ -5,18 +5,19 @@ import './Common.scss';
 
 function LaunchInfo() {
     return <div id="content">
-        <div style={{"textAlign": "center"}}>
+        <div>
             <p>Maximize to get started</p>
             <p>Write about this or maybe add buttons here 🤔</p>
         </div>
 
         <div className={style.Footer}>
-                <div>
-                    <a href="https://github.com/Bob-Rust/Bob-Rust-Electron" target="_blank" rel="noreferrer">
-                    <img draggable={false} className={style.GitHub} src={github} width="20" height="20" alt={'GitHub Logo'}/>
+            <div>
+                <a href="https://github.com/Bob-Rust/Bob-Rust-Electron" target="_blank" rel="noreferrer">
+                    <img draggable={false} className={style.GitHub} src={github} width="20" height="20"
+                         alt={'GitHub Logo'}/>
                     <span>Authors HardCoded & Sekwah</span>
-                    </a>
-                </div>
+                </a>
+            </div>
         </div>
     </div>;
 }
