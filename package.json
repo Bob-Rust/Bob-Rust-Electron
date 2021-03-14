@@ -38,13 +38,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.1",
-    "discord-rich-presence": "^0.0.8",
-    "electron-is-dev": "^1.2.0",
-    "robotjs": "^0.6.0"
   },
   "devDependencies": {
-    "electron-builder": "^22.10.5",
     "lerna": "^3.22.1"
   }
 }
