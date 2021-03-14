@@ -8,14 +8,24 @@
     "start": "lerna run start --parallel",
     "build": "lerna run build --stream",
     "preelectron-dist": "yarn build",
-    "electron-dist": "electron-builder --config electron-builder/config.js",
+    "electron-dist": "lerna run electron-dist --stream",
     "sync": "lerna bootstrap",
     "pretest-packed": "yarn electron-dist",
     "test-packed": "\"dist\\win-unpacked\\Bob Ross.exe\""
   },
-  "workspaces": [
-    "app/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/electron-builder",
+      "**/electron-builder/**",
+      "**/electron",
+      "**/electron/**",
+      "**/electron-rebuild",
+      "**/electron-rebuild/**"
+    ]
+ },
   "keywords": [],
   "author": {
     "name": "HardCoded, Sekwah",

@@ -1,10 +1,11 @@
 const base = {
-    appId: "com.bobross.bobrosspainter",
-    productName: "Bob Ross",
+    appId: "com.bobrust.bobrustpainter",
+    productName: "Bob Rust",
     remoteBuild: false,
     files: [
-        "app/main/src/**/*",
-        "app/renderer/build/**/*"
+        "src/**/*",
+        "renderer/*",
+        "renderer/static/**/*"
     ],
     nsis: {
         publish: ["github"],
