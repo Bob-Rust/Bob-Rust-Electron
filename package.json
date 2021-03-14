@@ -7,9 +7,11 @@
   "scripts": {
     "start": "lerna run start --parallel",
     "build": "lerna run build --stream",
-    "electron-dist": "lerna run build --stream && electron-builder --config electron-builder/config.js",
+    "preelectron-dist": "yarn build",
+    "electron-dist": "electron-builder --config electron-builder/config.js",
     "sync": "lerna bootstrap",
-    "test-packed": "yarn electron-dist && \"dist\\win-unpacked\\Bob Ross.exe\""
+    "pretest-packed": "yarn electron-dist",
+    "test-packed": "\"dist\\win-unpacked\\Bob Ross.exe\""
   },
   "workspaces": [
     "app/*"
