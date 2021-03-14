@@ -9,6 +9,10 @@
     "email": "contact@bobrust.com",
     "url": "https://www.bobrust.com/"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bob-Rust/Bob-Rust-Electron"
+  },
   "scripts": {
     "start": "electron . --enable-transparent-visuals --disable-gpu",
     "postinstall": "electron-rebuild",

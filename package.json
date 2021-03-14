@@ -25,7 +25,11 @@
       "**/electron-rebuild",
       "**/electron-rebuild/**"
     ]
- },
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bob-Rust/Bob-Rust-Electron"
+  },
   "keywords": [],
   "author": {
     "name": "HardCoded, Sekwah",
