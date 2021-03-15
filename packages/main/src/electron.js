@@ -20,31 +20,36 @@ const url = require('url');
 let mini_win = null;
 let maxi_win = null;
 
+const webPreferences = {
+	backgroundThrottling: true,
+	preload: path.join(__dirname, 'preload.js'),
+	contextIsolation: true,
+	enableRemoteModule: false,
+	nodeIntegration: false,
+	nativeWindowOpen: true
+	/* devTools: false, */
+};
+
+const defaultBrowserSettings = {
+	width: WINDOW_MIN_WIDTH,
+	height: WINDOW_MIN_HEIGHT,
+	title: "Bob Rust",
+	show: false,
+	resizable: false,
+	frame: false,
+	webPreferences,
+	maximizable: false,
+}
+
 
 app.commandLine.appendSwitch('disable-pinch');
 
 function createWindow() {
 	const win = new BrowserWindow({
-		width: WINDOW_MIN_WIDTH,
-		height: WINDOW_MIN_HEIGHT,
+		...defaultBrowserSettings,
 		minWidth: WINDOW_MIN_WIDTH,
 		minHeight: WINDOW_MIN_HEIGHT,
-		frame: false,
-		title: "Bob Rust",
-		/* transparent: false, This is default */
-		maximizable: false,
 		backgroundColor: '#383a3f',
-		resizable: false,
-		show: false,
-		webPreferences: {
-			backgroundThrottling: false,
-			preload: path.join(__dirname, 'preload.js'),
-			contextIsolation: true,
-			enableRemoteModule: false,
-			nodeIntegration: false,
-			nativeWindowOpen: true
-			/* devTools: false, */
-		}
 	});
 
 	// Was app/renderer/public/index.html
@@ -64,24 +69,8 @@ function createWindow() {
 
 	{
 		const win2 = new BrowserWindow({
-			width: WINDOW_MIN_WIDTH,
-			height: WINDOW_MIN_HEIGHT,
-			minWidth: WINDOW_MIN_WIDTH,
-			minHeight: WINDOW_MIN_HEIGHT,
-			title: "Bob Rust",
-			frame: false,
+			...defaultBrowserSettings,
 			transparent: true,
-			maximizable: false,
-			resizable: false,
-			show: false,
-			webPreferences: {
-				backgroundThrottling: false,
-				preload: path.join(__dirname, 'preload.js'),
-				contextIsolation: true,
-				enableRemoteModule: false,
-				nodeIntegration: false,
-				/* devTools: false, */
-			}
 		});
 
 		// Was app/renderer/public/fullscreen_index.html
