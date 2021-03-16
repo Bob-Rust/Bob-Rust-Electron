@@ -2,6 +2,7 @@ import React from 'react';
 import titleStyle from './TitleBar.module.scss';
 import '../Common.scss';
 
+
 function TitleBar(props) {
 
     let {draggable} = props;

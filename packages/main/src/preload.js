@@ -1,5 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron')
-var fs = require('fs')
+let fs = require('fs')
 
 contextBridge.exposeInMainWorld('Access', {
     close: () => {
