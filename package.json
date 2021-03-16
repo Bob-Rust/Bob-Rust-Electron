@@ -37,6 +37,9 @@
     "url": "https://www.bobrust.com/"
   },
   "license": "MIT",
+  "resolutions": {
+    "node-gyp": "5.0.3"
+  },
   "dependencies": {
   },
   "devDependencies": {

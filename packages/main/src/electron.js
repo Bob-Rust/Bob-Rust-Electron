@@ -1,8 +1,6 @@
 const { app, BrowserWindow, globalShortcut, ipcMain, screen, dialog, shell } = require('electron');
 const path = require('path');
 
-// TODO: Create a shadow around the minified window to make it easer to spot.
-
 /*
  * TODO: When a window frame is created it does not register when a mouse leaves the window
  * making some :hover css styles not return back to normal when the mouse leaves the window.
@@ -93,24 +91,11 @@ function createWindow() {
 		maxi_win = win2;
 	}
 
-	// Disable reloading
-	/*
-	win.on('focus', (event) => {
-		globalShortcut.register('CommandOrControl+R', () => {});
-		globalShortcut.register('CommandOrControl+Shift+R', () => {});
-		globalShortcut.register('F5', () => {});
-	});
-
-	win.on('blur', (event) => {
-		globalShortcut.unregister('CommandOrControl+R');
-		globalShortcut.unregister('CommandOrControl+Shift+R');
-		globalShortcut.unregister('F5');
-	});
-	*/
-
 	globalShortcut.register('F10', () => {
 		mini_win.focus();
 		maxi_win.focus();
+
+		// TODO: Figure out a way to give focus back to the game.
 	});
 
 	setupCommonHandlers(mini_win);
@@ -140,10 +125,6 @@ function setupCommonHandlers(win) {
 			e.preventDefault();
 		});
 	});
-
-	win.on('closed', () => {
-		app.quit();
-	});
 }
 
 app.whenReady().then(createWindow);
@@ -165,13 +146,7 @@ app.on('activate', () => {
 // icpMessages
 ipcMain.handle('closeBrowserWindow', async (event) => {
 	try {
-		mini_win.close();
-	} catch(e) {
-		console.warn(e);
-	}
-
-	try {
-		maxi_win.close();
+		app.quit();
 	} catch(e) {
 		console.warn(e);
 	}
@@ -249,6 +224,7 @@ ipcMain.handle('robot_checkMouse', async (event, x, y) => {
 	return pos.x == Math.trunc(x) && pos.y == Math.trunc(y);
 });
 
+/*
 ipcMain.handle('robot_screenshot', async (event, x, y, width, height) => {
 	let result = robot.screen.capture(x, y, width, height);
 
@@ -259,6 +235,7 @@ ipcMain.handle('robot_screenshot', async (event, x, y, width, height) => {
 		image: result.image,
 	};
 });
+*/
 
 if(!isDev) {
 	app.on('browser-window-focus', function () {
