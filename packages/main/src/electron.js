@@ -18,17 +18,7 @@ const isDev = require('electron-is-dev');
 const url = require('url');
 
 let mini_win = null;
-let maxi_win = null;
-
-const webPreferences = {
-	backgroundThrottling: true,
-	preload: path.join(__dirname, 'preload.js'),
-	contextIsolation: true,
-	enableRemoteModule: false,
-	nodeIntegration: false,
-	nativeWindowOpen: true
-	/* devTools: false, */
-};
+let maxi_win = null
 
 const defaultBrowserSettings = {
 	width: WINDOW_MIN_WIDTH,
@@ -37,7 +27,6 @@ const defaultBrowserSettings = {
 	show: false,
 	resizable: false,
 	frame: false,
-	webPreferences,
 	maximizable: false,
 }
 
@@ -50,6 +39,15 @@ function createWindow() {
 		minWidth: WINDOW_MIN_WIDTH,
 		minHeight: WINDOW_MIN_HEIGHT,
 		backgroundColor: '#383a3f',
+		webPreferences: {
+			backgroundThrottling: true,
+			preload: path.join(__dirname, 'preload.js'),
+			contextIsolation: true,
+			enableRemoteModule: false,
+			nodeIntegration: false,
+			nativeWindowOpen: true
+			/* devTools: false, */
+		}
 	});
 
 	// Was app/renderer/public/index.html
@@ -71,6 +69,15 @@ function createWindow() {
 		const win2 = new BrowserWindow({
 			...defaultBrowserSettings,
 			transparent: true,
+			webPreferences: {
+				backgroundThrottling: true,
+				preload: path.join(__dirname, 'preload.js'),
+				contextIsolation: true,
+				enableRemoteModule: false,
+				nodeIntegration: false,
+				nativeWindowOpen: true
+				/* devTools: false, */
+			}
 		});
 
 		// Was app/renderer/public/fullscreen_index.html
